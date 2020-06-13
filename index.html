@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Hello</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: 100vh;
+                background: #153646;
+            }
+
+            .clock {
+                width: 300px;
+                height: 300px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background: #153646;
+                background-image: url('clk.png');
+                background-size: cover;
+                border: 10px solid #153646;
+                border-radius: 50%;
+                box-shadow: 0 -15px 15px rgba(255, 255, 255, 0.05), inset 0 -15px 15px rgba(255, 255, 255, 0.05), 0 15px 15px rgba(0, 0, 0, 0.3), inset 0 15px 15px rgba(0, 0, 0, 0.3);
+            }
+
+            .clock:before {
+                content: '';
+                position: absolute;
+                width: 15px;
+                height: 15px;
+                background: #fff;
+                border-radius: 50%;
+                z-index: 10000;
+            }
+
+            .clock .hour, .clock .min, .clock .sec {
+                position: absolute;
+            }
+
+            .clock .hour, .hr {
+                width: 160px;
+                height: 160px;
+            }
+
+            .clock .min, .mn {
+                width: 190px;
+                height: 190px;
+            }
+
+            .mn:before {
+                content: '';
+                position: absolute;
+                width: 4px;
+                height: 90px;
+                background: #fff;
+                z-index: 11;
+                border-radius: 6px 6px 0 0;
+            }
+
+            .sc:before {
+                content: '';
+                position: absolute;
+                width: 2px;
+                height: 150px;
+                background: magenta;
+                z-index: 12;
+                border-radius: 6px 6px 0 0;
+            }
+
+            .clock .sec, .sc {
+                width: 230px;
+                height: 230px;
+            }
+
+            .hr, .mn, .sc {
+                display: flex;
+                justify-content: center;
+                position: absolute;
+                border-radius: 50%;
+            }
+
+            .hr:before {
+                content: '';
+                position: absolute;
+                width: 8px;
+                height: 80px;
+                background: #ff105e;
+                z-index: 10;
+                border-radius: 6px 6px 0 0;
+            }
+
+            .tt {
+                color: #fff;
+                font-family: Segoe UI;
+                font-weight: bold;
+                font-size: 30pt;
+                position: absolute;
+                top: 55px;
+                letter-spacing: 8px;
+                text-shadow: -2px 5px 0px rgba(0, 0, 0, 1);
+                text-transform: uppercase;
+            }
+
+            .country {
+                color: #fff;
+                font-family: Segoe UI;
+                font-weight: bold;
+                font-size: 20pt;
+                position: absolute;
+                top: 130px;
+                letter-spacing: 8px;
+                text-transform: uppercase;
+            }
+
+            .digital_clock {
+                color: #fff;
+                font-family: Myriad Pro;
+                font-weight: bold;
+                letter-spacing: 5px;
+                position: absolute;
+                bottom: 20%;
+            }
+
+            .dydt {
+                color: #fff;
+                font-family: Myriad Pro;
+                font-weight: bold;
+                letter-spacing: 5px;
+                position: absolute;
+                bottom: 15%;
+            }
+        </style>
+    </head>
+    <body onload="startTime()">
+        <h1 class="tt">CLOCK Day and Date!</h1>
+        <h4 class="country"><span style="color: #ff9933;">in</span>d<span style="color: #138808;">ia</span></h4>
+        <div class="clock">
+            <div class="hour">
+                <div class="hr" id="hr"></div>
+            </div>
+            <div class="min">
+                <div class="mn" id="mn"></div>
+            </div>
+            <div class="sec">
+                <div class="sc" id="sc"></div>
+            </div>
+        </div>
+        <div id="dig" class="digital_clock"></div>
+        <div id="dydt" class="dydt"></div>
+        <script type="text/javascript">
+            // JS for Analog Clock
+            const hour = document.querySelector('#hr');
+            const minute = document.querySelector('#mn');
+            const second = document.querySelector('#sc');
+
+            function time() {
+                let date = new Date();
+                let sec = date.getSeconds();
+                let min = date.getMinutes();
+                let hr = date.getHours();
+
+                let hrDegree = hr * 360 / 12 + ((min * 360 / 60) / 12);
+                let minDegree = (min * 360 / 60) + (sec * 360 / 60) / 60;
+                let secDegree = sec * 360 / 60;
+
+                hour.style.transform = "rotate(" + hrDegree + "deg)";
+                minute.style.transform = "rotate(" + minDegree + "deg)";
+                second.style.transform = "rotate(" + secDegree + "deg)";
+            }
+
+            setInterval(time, 1000);
+
+            // JS for Digital Clock
+            function startTime() {
+                var today = new Date();
+                var h = today.getHours();
+                var m = today.getMinutes();
+                var s = today.getSeconds();
+                m = checkTime(m);
+                s = checkTime(s);
+                document.getElementById('dig').innerHTML = h + ":" + m + ":" + s;
+                var t = setTimeout(startTime, 500);
+            }
+            function checkTime(i) {
+                if (i < 10) {
+                    i = "0" + i
+                }
+                ;return i;
+            }
+
+            // Day and Date Javascript
+            let days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+            let d = new Date();
+            var yr = d.getFullYear();
+            var dy = d.getDay();
+            var mn = d.getMonth();
+            var dt = d.getDate();
+
+            document.querySelector('#dydt').innerHTML = days[dy] + ", " + days[mn] + " " + dt + ", " + yr
+        </script>
+    </body>
+</html>
